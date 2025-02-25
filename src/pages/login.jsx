@@ -9,18 +9,56 @@ const Login = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (event) => {
+
+
+  const handleLogin = async (event) => {
     event.preventDefault();
 
     if (!email || !password) {
-      alert("Please enter email and password.");
-      return;
+        alert("Please enter email and password.");
+        return;
     }
 
-    localStorage.setItem("auth", "true");
-    setIsAuthenticated(true);
-    navigate("/");
-  };
+    try {
+        const response = await fetch("http://localhost:3200/api/v1/auth/login", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify({ 
+                "email": email, 
+                "password": password  
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+
+        console.log("Getting data:", data);
+
+        // Ensure data is set before navigating
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.user.userid);
+        localStorage.setItem("userRole", data.user.userRole);
+
+        console.log("Stored UserId:", localStorage.getItem("userId")); // Debugging
+
+        setIsAuthenticated(true);
+
+        // Ensure storage is updated before navigation
+        setTimeout(() => {
+            navigate("/");
+        }, 100); // Small delay to ensure storage updates
+
+    } catch (error) {
+        alert(error.message);
+        console.error("Login Error:", error);
+    }
+};
+
 
   return (
     <Wrapper>

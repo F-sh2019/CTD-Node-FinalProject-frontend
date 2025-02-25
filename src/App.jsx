@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Navbar from "./components/Navbar";
 import './App.css';
 
-import { Home, Courses, RegisterUser, Registration, Search, UserManagement, Login } from "./pages";
+import { Home, Courses, RegisterUser, Registration, Search, UserManagement, Login ,AddCourse} from "./pages";
 
 function App() {
   
@@ -32,6 +32,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
+            <Route path="/courses/:id" element={<AddCourse/>} />
             <Route path="/register" element={<Registration />} />
             <Route path="/search" element={<Search />} />
             <Route path="/usermanagement" element={<UserManagement />} />

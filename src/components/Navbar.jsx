@@ -11,6 +11,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userRole");
     navigate("/login"); // Redirect to login
     window.location.reload(); // Refresh to update authentication state
   };
