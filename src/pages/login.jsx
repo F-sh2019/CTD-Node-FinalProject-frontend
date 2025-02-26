@@ -37,14 +37,14 @@ const Login = ({ setIsAuthenticated }) => {
 
         const data = await response.json();
 
-        console.log("Getting data:", data);
+        //console.log("Getting data:", data);
 
         // Ensure data is set before navigating
         localStorage.setItem("token", data.token);
         localStorage.setItem("userId", data.user.userid);
         localStorage.setItem("userRole", data.user.userRole);
 
-        console.log("Stored UserId:", localStorage.getItem("userId")); // Debugging
+        //console.log("Stored UserId:", localStorage.getItem("userId")); // Debugging
 
         setIsAuthenticated(true);
 

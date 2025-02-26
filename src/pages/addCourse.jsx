@@ -1,30 +1,27 @@
-import {React , useEffect, useState} from "react"
+import React ,{ useEffect, useState} from "react"
 import Styled from "styled-components"
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
+import { useNavigate  ,useParams } from "react-router-dom";
 
 
-export default function AddCourse({courseId}){
+export default function AddCourse(){
     
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
-    console.log("userId", userId)
-    
-
+   
+    const navigate= useNavigate() ;
+    const { id } = useParams();
+   
+   const courseId = id === "null" ? null : id;
     const [courseData, setCourseData] = useState({
         title: '',
         description:'',
         pic:'' ,
         document:'' ,
         teacher: userId ,
-        schedule:[{
-            day:'' ,
-            startTime:'' ,
-            endTime:''
-        }
-
-        ]
+        schedule:[]
     }      
     );
     const [image, setImage] = useState(null);
@@ -45,28 +42,32 @@ export default function AddCourse({courseId}){
     
     
 
-        useEffect(() => {
-                if (courseId) {
-                    fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                        }
-                    })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error("Failed to fetch course data");
-                        }
-                        return response.json();
-                    })
-                    .then((data) =>{
-                        console.log("Fetched Data:", data);
-                        setCourseData(data.Courses);
-                    })
-                    .catch((err) => console.error(err));
+    useEffect(() => {
+        if (courseId) {
+            //console.log("courseId",courseId)
+
+            fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 }
-            }, [courseId, token]);
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch course data");
+                }
+                return response.json();
+            })
+            .then((data) =>{
+                console.log("Fetched Data:", data);
+                setCourseData(data.course);
+                setScheduleS(data.course.schedule)
+           
+            })
+            .catch((err) => console.error(err));
+        }
+    }, [courseId, token]);
 
 
 
@@ -87,29 +88,45 @@ export default function AddCourse({courseId}){
         }
     };
 
-    const handleValue=(e)=>{
-        console.log(e)
+    const handleValue = (e) => {
+        //console.log(e);
         const { name, value } = e.target;
+    
         setCourseData((prev) => ({
             ...prev,
-            [name]: value,
+            [name]: value, 
         }));
-        if(name==="pic") setImage(value)
-        if(name==="day" || name==="startTime" || name==="endTime")   {
-            console.log([name],value)
-            setSchedule((p)=>({ ...p , [name]:value ,}));
-        } 
-    }
+    
+        if (name === "pic") setImage(value);
+    
+        if (name === "day" || name === "startTime" || name === "endTime") {
+          
+            setSchedule((prev) => ({
+                ...prev,
+                [name]: prev[name] ? `${prev[name]}, ${value}` : value, 
+            }));
+        }
+        
+    };
+    
+    const handleAddSchedule = () => {
 
-    const handleAddSchedule=()=>{
-        console.log("Addschedule")
+    
+        if (!schedule.day || !schedule.startTime || !schedule.endTime) {
+            toast.error("Please fill out all schedule fields before adding.");
+            return;
+        }
+    
+        
         setScheduleS((prev) => [...prev, schedule]);
         setCourseData((prev) => ({
-            ...prev,
-            schedule: [...prev.schedule, schedule],
-        }));
+        ...prev,
+        schedule: [...prev.schedule, schedule],
+    }));
+
         setSchedule({ day: "", startTime: "", endTime: "" });
-    }
+    };
+    
     
     const handleDeleteSchedule=(index)=>{
         setScheduleS((prev) => {
@@ -124,33 +141,39 @@ export default function AddCourse({courseId}){
 
 
     const handleAddCourse = () => {
-       // console.log("Sending courseData:", JSON.stringify(courseData, null, 2));
-        const validSchedule = courseData.schedule.filter(s => s.day && s.startTime && s.endTime);
-        const formData = new FormData();
-        formData.append("title", courseData.title);
-        formData.append("description", courseData.description);
-        formData.append("teacher", courseData.teacher);
-        formData.append("schedule", JSON.stringify(validSchedule));
+        // console.log("Sending courseData:", JSON.stringify(courseData, null, 2));
+        // // const validSchedule = courseData.schedule.filter(s => s.day && s.startTime && s.endTime);
+        // const formData = new FormData();
+        // formData.append("title", courseData.title);
+        // formData.append("description", courseData.description);
+        // formData.append("teacher", courseData.teacher);
+        // formData.append("schedule", JSON.stringify(validSchedule));
     
-        if (image) {
-            formData.append("pic", image);  // Append actual file
-        }
-        if (pdf) {
-            formData.append("document", pdf);  // Append actual file
-        }
+        // if (image) {
+        //     formData.append("pic", image);  // Append actual file
+        // }
+        // if (pdf) {
+        //     formData.append("document", pdf);  // Append actual file
+        // }
     
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
+        // formData.forEach((value, key) => {
+        //     console.log(key, value);
+        // });
     
+       
+
+
         fetch(`http://localhost:3200/api/v1/courses`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
             },
-            body: formData,
+           // body: formData,
+           body: JSON.stringify(courseData),
         })
             .then((response) => {
+              
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
@@ -170,7 +193,7 @@ export default function AddCourse({courseId}){
     };
     
 const handleUpdateCourse=()=>{
-    fetch(`http://localhost:3200/api/v1/courses`, {
+    fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
         method: 'PATCH',
         headers: {
             Authorization: `Bearer ${token}`,
@@ -185,59 +208,63 @@ const handleUpdateCourse=()=>{
             return response.json();
         })
         .then(() => {
-            toast.success('Class Added successfully!', {
-                position: toast.POSITION.TOP_CENTER,
-                autoClose: 3000,
-            });
+            toast.success('Class Added successfully!');
 
             setTimeout(() => {
                 navigate('/courses');
             }, 3500);
         })
         .catch((error) => {
-            toast.error('Failed to add class. Please try again.', {
-                position: toast.POSITION.TOP_CENTER,
-                autoClose: 3000,
-            });
+            toast.error('Failed to add class. Please try again.');
             console.error('Error:', error);
         });
 }
 
 
 const handleCancelCourse=()=>{
-    setCourseData('') ;
+    
+    setCourseData({
+        title: '',
+        description: '',
+        pic: '',
+        document: '',
+        teacher: userId,
+        schedule: []
+    });
     navigate('/courses');
+   
 }
     return (
         <Wrapper>
+            {console.log(courseData)}
             <h4 className="title">Course Management</h4>
             <div className="top-container">           
             
             <div className="item"><label htmlFor="title" className="label">Title:</label>
-            <input name="title" type="text" className="input" onChange={handleValue}></input>
+            <input name="title" type="text" className="input" onChange={handleValue} value={courseData.title} ></input>
             </div>
             <div className="item">
             <label htmlFor="description" className="label">Description:</label>
-            <input name="description" type="text" onChange={handleValue} className="input"></input>
+            <input name="description" type="text" onChange={handleValue} className="input" value={courseData.description}></input>
             </div>
              {/* Image Upload */}
              <div className="img-container item">
                 <label className="label">Course Image:</label>
-                <input type="file" accept="image/*" onChange={handlePdfChange}  name="pic"/>
+                <input type="file" accept="image/*" onChange={handleImageChange}  name="pic" />
                 {image && <img src={image} alt="Selected" width="150" />}
             </div>
 
             {/* PDF Upload */}
             <div className="img-container item">
                 <label className="label">Upload PDF/DOC Files:</label>
-                <input type="file" accept="application/pdf" onChange={handleImageChange} className="input"  name="document"/>
+                <input type="file" accept="application/pdf" onChange={handlePdfChange} className="input"  name="document" />
                 {pdf && <p>Selected PDF: {pdf}</p>}
             </div>
             </div>
 
             <div><label  className="label">Schedule:</label>             
             <label htmlFor="day"></label>
-            <select name="day" onChange={handleValue}>
+            <select name="day" onChange={handleValue}  >
                 <option value="Monday">Monday</option>
                 <option value="Tuesday">Tuesday</option>
                 <option value="Wednesday">Wednesday</option>
@@ -272,9 +299,12 @@ const handleCancelCourse=()=>{
               
             </div>   
             </div>
-            <button onClick={handleAddCourse}>Add</button>    
-            <button onClick={handleUpdateCourse}>Edit</button>    
-            <button onClick={handleCancelCourse}>Cancel</button>    
+            {!courseId ? (
+                <button onClick={handleAddCourse}>Add Course</button>
+            ) : (
+                <button onClick={handleUpdateCourse}>Edit Course</button>
+            )}
+             <button onClick={handleCancelCourse}>Cancel</button>
 
         </Wrapper>
     )
