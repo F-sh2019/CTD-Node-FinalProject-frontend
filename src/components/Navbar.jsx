@@ -28,7 +28,7 @@ const Navbar = () => {
             <li className="nav-item"><Link to="/courses"> Course Management </Link></li>
             {/* <li className="nav-item"><Link to="/register"> Registeration </Link></li>
             <li className="nav-item"><Link to="/search">search  </Link></li> */}
-            <li className="nav-item"><Link to="/usermanagement"> User Management </Link></li>
+            <li className="nav-item"><Link to="/userManagement"> User Management </Link></li>
             <li className="nav-item"><Link to="/login"> Login </Link></li>
         </ul>
         <button onClick={handleLogout}>Logout</button>
@@ -44,9 +44,9 @@ display: flex;
 justify-content: start;  /* Aligns items to the left */
 gap: 20px; 
 .logo img {
-  height: 20vh;  /* Adjust to fit better */
+  height: 15vh;  /* Matches the navbar height */
   width: auto;
-  margin: 0;
+  margin-top:50px;
 }
 .navbar {
   position: fixed;  /* Stays at the top */

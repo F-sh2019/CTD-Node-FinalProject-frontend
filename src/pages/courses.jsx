@@ -27,7 +27,7 @@ export default function Courses() {
             return response.json();
         })
         .then((data) =>{
-            //console.log("Fetched Data:", data); // Debugging
+            console.log("Fetched Data:", data.Courses); // Debugging
             setCourseData(data.Courses);
         })
         .catch((err) => console.error(err));
@@ -98,6 +98,7 @@ export default function Courses() {
             <div className="grid-container">
             {courseData.map((course, index) => 
                 <div key={index} className="grid-item">
+                    
                     <img id={`img${index}`} src={course.pic} alt={course.title} />
                     <label htmlFor={`img${index}`}>{course.description}</label>
                     <div className="grid-item">
@@ -129,6 +130,13 @@ const Wrapper = Styled.section`
         margin: auto;
     }
 
+    .Title{
+          position: sticky;
+        top: 0;
+        background: #fff; /* Set a background so content scrolling underneath doesn't show through */
+        padding: 10px;
+        z-index: 100; /* Ensures it stays above other content */
+    }
     .grid-item {
         display: flex;
         flex-direction: row;

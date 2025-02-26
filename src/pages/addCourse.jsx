@@ -250,14 +250,14 @@ const handleCancelCourse=()=>{
              {/* Image Upload */}
              <div className="img-container item">
                 <label className="label">Course Image:</label>
-                <input type="file" accept="image/*" onChange={handleImageChange}  name="pic" />
+                <input type="file" accept="image/*" onChange={handleValue}  name="pic" />
                 {image && <img src={image} alt="Selected" width="150" />}
             </div>
 
             {/* PDF Upload */}
             <div className="img-container item">
                 <label className="label">Upload PDF/DOC Files:</label>
-                <input type="file" accept="application/pdf" onChange={handlePdfChange} className="input"  name="document" />
+                <input type="file" accept="application/pdf" onChange={handleValue} className="input"  name="document" />
                 {pdf && <p>Selected PDF: {pdf}</p>}
             </div>
             </div>
