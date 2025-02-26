@@ -25,6 +25,7 @@ function App() {
           {/* Redirect all routes to login if not authenticated */}
           <Route path="*" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+          <Route path="/registerUser" element={<RegisterUser />} />
         </Routes>
       ) : (
         <>
@@ -36,6 +37,7 @@ function App() {
             <Route path="/register" element={<Registration />} />
             <Route path="/search" element={<Search />} />
             <Route path="/usermanagement" element={<UserManagement />} />
+            <Route path="/registerUser" element={<RegisterUser />}/>
             <Route path="/login" element={<Navigate to="/" />} /> {/* Redirect logged-in users */}
           </Routes>
         </>

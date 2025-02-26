@@ -87,7 +87,7 @@ const Login = ({ setIsAuthenticated }) => {
         <button type="submit">Login</button>
         <p>
           Not Registered Yet?
-          <Link to="/registerUser" className="member-btn"> Register! </Link>
+          <Link to="/RegisterUser" className="member-btn" > Register! </Link>
         </p>
       </form>
     </Wrapper>
