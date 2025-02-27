@@ -91,6 +91,7 @@ export default function AddCourse(){
 
     const handleValue = (e) => {
         //console.log(e);
+        e.preventDefault();
         const { name, value } = e.target;
     
         setCourseData((prev) => ({
@@ -110,8 +111,8 @@ export default function AddCourse(){
         
     };
     
-    const handleAddSchedule = () => {
-       // e.preventDefault();
+    const handleAddSchedule = (e ) => {
+        e.preventDefault();
     
         if (!schedule.day || !schedule.startTime || !schedule.endTime) {
             toast.error("Please fill out all schedule fields before adding.");
@@ -333,7 +334,8 @@ const handleCancelCourse=()=>{
                     <img src={URL.createObjectURL(image)} alt="Selected" width="150" />
                     ) : courseData.pic ? (
                     // No new file selected, but courseData.pic exists (fetched from backend).
-                    <img src={`http://localhost:3200${courseData.pic}`} alt="Course" width="150" />
+                    <img src={`https://ctd-node-final-farkhondehsh.onrender.com${courseData.pic.startsWith('/') ? courseData.pic : '/uploads/' + courseData.pic}`} alt="Course" width="150" />
+
                     ) : (
                     // No image to display; you can show a placeholder or nothing.
                     <p>No image selected</p>
@@ -351,7 +353,7 @@ const handleCancelCourse=()=>{
     ) : courseData.document ? (
       // If no new file is selected but there's an existing document, show a link
       <a
-        href={`http://localhost:3200${courseData.document}`}
+        href={`https://ctd-node-final-farkhondehsh.onrender.com${courseData.document}`}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -390,7 +392,8 @@ const handleCancelCourse=()=>{
                 </option>
             ))}
             </select>
-            <button onClick={handleAddSchedule}>Add Schedule</button> 
+            <button onClick={(e)=>handleAddSchedule(e)}
+                type="button"  >Add Schedule</button> 
             <div className="list-container"> 
             {scheduleS.map((item, index) => ( // Corrected index and item order
                 <div key={`l-${index}`}>

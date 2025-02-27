@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import './App.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Home, Courses, RegisterUser, Registration, Search, UserManagement, Login ,AddCourse} from "./pages";
 
@@ -20,6 +22,7 @@ function App() {
 
   return (
     <Router>
+       <ToastContainer />
       {!isAuthenticated ? (
         <Routes>
           {/* Redirect all routes to login if not authenticated */}

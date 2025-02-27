@@ -92,7 +92,7 @@ export default function Courses() {
                         onClick={handelAddCourse}
                     >
                         <FaUserPlus />
-                        <span className="description">Register New Class</span>
+                        <span className="description">Register New course</span>
                     </button>
                 </div>
 
@@ -102,7 +102,8 @@ export default function Courses() {
                     
                     { course.pic ? (
                         // No new file selected, but courseData.pic exists (fetched from backend).
-                        <img src={`http://localhost:3200${course.pic}`} alt="Course" width="150" />
+                        <img src={`https://ctd-node-final-farkhondehsh.onrender.com${course.pic.startsWith('/') ? course.pic : '/uploads/' + course.pic}`} alt="Course" width="150" />
+
                         ) : (
                         // No image to display; you can show a placeholder or nothing.
                         <p>No image selected</p>
