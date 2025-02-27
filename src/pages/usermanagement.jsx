@@ -104,38 +104,33 @@ const UserManagement = () => {
                 </div>
 
                 <div className="grid-container">
-                    {/* Render column headers
-                    {fields.map((label, index) => (
-                        <div key={index} className="grid-item grid-header">
-                            {labelMap[label]}
-                        </div>
-                    ))} */}
-                    {/* Render rows dynamically */}
-                    {getCurrentItems().map((user, rowIndex) =>
-                        //labelMap.map((label, colIndex) => (
-                            <div key={`${rowIndex}-id`} className="grid-item">
-                                {/* {label === 'Edit/Delete' ? ( */}
-                                    <div className="actions">
-                                        
-                                        <button
-                                            className={
-                                                user._id !== currentUserId
-                                                    ? 'action-button delete'
-                                                    : 'action-button.delete.disabeld'
-                                            }
-                                            onClick={() => handelDeleteUser(user._id)}
-                                            disabled={user._id === currentUserId ? true : false}
-                                        >
-                                            <FaTrash />
-                                        </button>
-                                    </div>
-                                {/* ) : ( */}
-                                    user
-                                {/* )} */}
+                    
+                    <div className="grid-item grid-header">Name</div>
+                    <div className="grid-item grid-header">Email</div>
+                    <div className="grid-item grid-header">Role</div>
+                    <div className="grid-item grid-header">Actions</div>
+
+                   
+                    {getCurrentItems().map((user) => (
+                        <React.Fragment key={user._id}>
+                            <div className="grid-item">{user.name}</div>
+                            <div className="grid-item">{user.email}</div>
+                            <div className="grid-item">{user.role}</div>
+                            <div className="grid-item">
+                                <div className="actions">
+                               
+                                <button
+                                    className="action-button delete"
+                                    onClick={() => handelDeleteUser(user._id)}
+                                    disabled={user._id === currentUserId}
+                                >
+                                    <FaTrash />
+                                </button>
+                                </div>
                             </div>
-                        //))
-                    )}
-                </div>
+                        </React.Fragment>
+                    ))}
+                    </div>
             </Wrapper>
             <Pagination
                 totalItems={totalItems}
@@ -158,8 +153,8 @@ const Wrapper = styled.section`
         align-items: center;
     }
     .grid-container {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+       display: grid;
+        grid-template-columns: repeat(4, 1fr);
         gap: 10px;
         padding: 10px;
     }
@@ -231,19 +226,5 @@ const Wrapper = styled.section`
         padding-left: 1rem;
         font-size: 2rem;
     }
-    @media (min-width: 600px) {
-        .grid-container {
-            grid-template-columns: repeat(4, 1fr);
-        }
-    }
-    @media (min-width: 1024px) {
-        .grid-container {
-            grid-template-columns: repeat(5, 1fr);
-        }
-    }
-    @media (min-width: 1440px) {
-        .grid-container {
-            grid-template-columns: repeat(5, 1fr);
-        }
-    }
+   
 `;

@@ -29,6 +29,7 @@ export default function Courses() {
         .then((data) =>{
             console.log("Fetched Data:", data.Courses); // Debugging
             setCourseData(data.Courses);
+            console.log(data.Courses)
         })
         .catch((err) => console.error(err));
     }, []);
@@ -99,7 +100,14 @@ export default function Courses() {
             {courseData.map((course, index) => 
                 <div key={index} className="grid-item">
                     
-                    <img id={`img${index}`} src={course.pic} alt={course.title} />
+                    { course.pic ? (
+                        // No new file selected, but courseData.pic exists (fetched from backend).
+                        <img src={`http://localhost:3200${course.pic}`} alt="Course" width="150" />
+                        ) : (
+                        // No image to display; you can show a placeholder or nothing.
+                        <p>No image selected</p>
+                        )
+                    }
                     <label htmlFor={`img${index}`}>{course.description}</label>
                     <div className="grid-item">
                     <button onClick={()=>handleEditCourse(course._id)}>Edit</button>

@@ -21,6 +21,7 @@ export default function registerUser(){
         }));
     };
     const handleRegister = ()=>{
+   
        fetch(`http://localhost:3200/api/v1/auth/register`, {
                    method: "POST",
                    headers: {
@@ -41,7 +42,7 @@ export default function registerUser(){
                        toast.success("User Registered successfully!");
            
                        setTimeout(() => {
-                           navigate("/");
+                           navigate("/login");
                        }, 3500);
                    })
                    .catch((error) => {
@@ -53,7 +54,13 @@ export default function registerUser(){
 
     return (
         <Wrapper>
-        <form>
+        <form
+  encType="multipart/form-data"
+  onSubmit={(e) => {
+    e.preventDefault();
+    handleRegister();
+  }}
+>
             <div className="logo-container">
                 <img src={Logo} className="logo" alt="Logo" />
             </div>
@@ -77,8 +84,8 @@ export default function registerUser(){
        <option key="admin" value="admin">admin </option>
        </select></div>
        <div>
-        <button onClick={handleRegister}>Register</button>
-        <button onClick={handleRegister}>Cancel</button>
+        <button type="submit">Register</button>
+        
        </div>
        </form>
        </Wrapper>

@@ -28,8 +28,8 @@ const Navbar = () => {
             <li className="nav-item"><Link to="/courses"> Course Management </Link></li>
             {/* <li className="nav-item"><Link to="/register"> Registeration </Link></li>
             <li className="nav-item"><Link to="/search">search  </Link></li> */}
-            <li className="nav-item"><Link to="/userManagement"> User Management </Link></li>
-            <li className="nav-item"><Link to="/login"> Login </Link></li>
+            {localStorage.getItem("userRole")==="admin" && <li className="nav-item"><Link to="/userManagement"> User Management </Link></li>}
+            
         </ul>
         <button onClick={handleLogout}>Logout</button>
         </nav>

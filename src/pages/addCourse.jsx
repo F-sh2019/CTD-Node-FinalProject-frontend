@@ -77,16 +77,18 @@ export default function AddCourse(){
     const handleImageChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setImage(file); // Store actual file instead of URL
+          setImage(file); 
+          setCourseData((prev) => ({ ...prev, pic: file.name }));
         }
-    };
-    
-    const handlePdfChange = (event) => {
+      };
+      
+      const handlePdfChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setPdf(file); // Store actual file instead of name
+          setPdf(file); 
+          setCourseData((prev) => ({ ...prev, document: file.name }));
         }
-    };
+      };
 
     const handleValue = (e) => {
         //console.log(e);
@@ -110,7 +112,7 @@ export default function AddCourse(){
     };
     
     const handleAddSchedule = () => {
-
+       // e.preventDefault();
     
         if (!schedule.day || !schedule.startTime || !schedule.endTime) {
             toast.error("Please fill out all schedule fields before adding.");
@@ -140,85 +142,156 @@ export default function AddCourse(){
     }
 
 
-    const handleAddCourse = () => {
-        // console.log("Sending courseData:", JSON.stringify(courseData, null, 2));
-        // // const validSchedule = courseData.schedule.filter(s => s.day && s.startTime && s.endTime);
-        // const formData = new FormData();
-        // formData.append("title", courseData.title);
-        // formData.append("description", courseData.description);
-        // formData.append("teacher", courseData.teacher);
-        // formData.append("schedule", JSON.stringify(validSchedule));
-    
-        // if (image) {
-        //     formData.append("pic", image);  // Append actual file
-        // }
-        // if (pdf) {
-        //     formData.append("document", pdf);  // Append actual file
-        // }
-    
-        // formData.forEach((value, key) => {
-        //     console.log(key, value);
-        // });
-    
-       
+    // const handleAddCourse = () => {
+           
 
 
-        fetch(`http://localhost:3200/api/v1/courses`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            },
-           // body: formData,
-           body: JSON.stringify(courseData),
-        })
-            .then((response) => {
+    //     fetch(`http://localhost:3200/api/v1/courses`, {
+    //         method: "POST",
+    //         headers: {
+    //             Authorization: `Bearer ${token}`,
+    //             "Content-Type": "application/json",
+    //         },
+    //        // body: formData,
+    //        body: JSON.stringify(courseData),
+    //     })
+    //         .then((response) => {
               
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then(() => {
-                toast.success("Class Added successfully!");
+    //             if (!response.ok) {
+    //                 throw new Error("Network response was not ok");
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(() => {
+    //             toast.success("Class Added successfully!");
     
-                setTimeout(() => {
-                    navigate("/courses");
-                }, 3500);
-            })
-            .catch((error) => {
-                toast.error("Failed to add class. Please try again.");
-                console.error("Error:", error);
-            });
-    };
+    //             setTimeout(() => {
+    //                 navigate("/courses");
+    //             }, 3500);
+    //         })
+    //         .catch((error) => {
+    //             toast.error("Failed to add class. Please try again.");
+    //             console.error("Error:", error);
+    //         });
+    // };
     
-const handleUpdateCourse=()=>{
-    fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
-        method: 'PATCH',
-        headers: {
+
+    const handleAddCourse = () => {
+       
+        const formData = new FormData();
+        formData.append("title", courseData.title);
+        formData.append("description", courseData.description);
+        formData.append("teacher", userId);
+        formData.append("schedule", JSON.stringify(courseData.schedule));
+      
+        if (image) {
+          formData.append("pic", image);  // Append the image File object
+        }
+        if (pdf) {
+          formData.append("document", pdf);  // Append the document File object
+        }
+      
+        fetch(`http://localhost:3200/api/v1/courses`, {
+          method: "POST",
+          headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(courseData),
-    })
-        .then((response) => {
+            // Note: Do not set "Content-Type" header when sending FormData,
+            // the browser will set the correct multipart boundary automatically.
+          },
+          body: formData,
+        })
+          .then((response) => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+              throw new Error("Network response was not ok");
             }
             return response.json();
-        })
-        .then(() => {
-            toast.success('Class Added successfully!');
-
+          })
+          .then(() => {
+            toast.success("Class Added successfully!");
             setTimeout(() => {
-                navigate('/courses');
+              navigate("/courses");
             }, 3500);
-        })
-        .catch((error) => {
-            toast.error('Failed to add class. Please try again.');
-            console.error('Error:', error);
-        });
-}
+          })
+          .catch((error) => {
+            toast.error("Failed to add class. Please try again.");
+            console.error("Error:", error);
+          });
+      };
+      
+// const handleUpdateCourse=()=>{
+   
+//     fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
+//         method: 'PATCH',
+//         headers: {
+//             Authorization: `Bearer ${token}`,
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify(courseData),
+//     })
+//         .then((response) => {
+//             if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//             }
+//             return response.json();
+//         })
+//         .then(() => {
+//             toast.success('Class Added successfully!');
+
+//             setTimeout(() => {
+//                 navigate('/courses');
+//             }, 3500);
+//         })
+//         .catch((error) => {
+//             toast.error('Failed to add class. Please try again.');
+//             console.error('Error:', error);
+//         });
+// }
+const handleUpdateCourse = () => {
+    
+    const formData = new FormData();
+  
+    // Append text fields
+    formData.append("title", courseData.title);
+    formData.append("description", courseData.description);
+    formData.append("teacher", userId);
+    formData.append("schedule", JSON.stringify(scheduleS));
+  
+    // Append files only if new ones were selected.
+    if (image instanceof File) {
+      formData.append("pic", image);
+    }
+    if (pdf instanceof File) {
+      formData.append("document", pdf);
+    }
+    console.log(formData)
+    // Send the PATCH request without manually setting the Content-Type header.
+    fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // Note: Do NOT set "Content-Type" here.
+      },
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(() => {
+        console.log("successful")
+        toast.success("Course updated successfully!");
+        setTimeout(() => {
+          navigate("/courses");
+        }, 3500);
+      })
+      .catch((error) => {
+        toast.error("Failed to update course. Please try again.");
+        console.error("Error:", error);
+      });
+  };
+  
 
 
 const handleCancelCourse=()=>{
@@ -236,8 +309,13 @@ const handleCancelCourse=()=>{
 }
     return (
         <Wrapper>
-            {console.log(courseData)}
+            <form encType="multipart/form-data" onSubmit={(e) => {
+                e.preventDefault();
+                courseId ? handleUpdateCourse() : handleAddCourse();
+                }}>
+            
             <h4 className="title">Course Management</h4>
+            
             <div className="top-container">           
             
             <div className="item"><label htmlFor="title" className="label">Title:</label>
@@ -250,15 +328,25 @@ const handleCancelCourse=()=>{
              {/* Image Upload */}
              <div className="img-container item">
                 <label className="label">Course Image:</label>
-                <input type="file" accept="image/*" onChange={handleValue}  name="pic" />
-                {image && <img src={image} alt="Selected" width="150" />}
+                <input type="file" accept="image/*" onChange={handleImageChange}  name="pic" />
+                { image ? (
+                    // A new file has been selected, show its preview.
+                    <img src={URL.createObjectURL(image)} alt="Selected" width="150" />
+                    ) : courseData.pic ? (
+                    // No new file selected, but courseData.pic exists (fetched from backend).
+                    <img src={`http://localhost:3200${courseData.pic}`} alt="Course" width="150" />
+                    ) : (
+                    // No image to display; you can show a placeholder or nothing.
+                    <p>No image selected</p>
+                    )
+                }
             </div>
 
             {/* PDF Upload */}
             <div className="img-container item">
-                <label className="label">Upload PDF/DOC Files:</label>
-                <input type="file" accept="application/pdf" onChange={handleValue} className="input"  name="document" />
-                {pdf && <p>Selected PDF: {pdf}</p>}
+            <label className="label">Upload PDF/DOC Files:</label>
+            <input type="file" accept="application/pdf" onChange={handlePdfChange} name="document" />
+            {pdf && <p>Selected PDF: {pdf.name}</p>}
             </div>
             </div>
 
@@ -299,13 +387,10 @@ const handleCancelCourse=()=>{
               
             </div>   
             </div>
-            {!courseId ? (
-                <button onClick={handleAddCourse}>Add Course</button>
-            ) : (
-                <button onClick={handleUpdateCourse}>Edit Course</button>
-            )}
-             <button onClick={handleCancelCourse}>Cancel</button>
-
+            <button type="submit">{!courseId ? "Add Course" : "Edit Course"}</button>
+             <button type="button" onClick={handleCancelCourse}>Cancel</button>
+            
+             </form>
         </Wrapper>
     )
 }
@@ -316,7 +401,7 @@ const Wrapper = Styled.section`
 
     .title {
         position: fixed;
-        top: 60px;
+        top: 80px;
         left: 0;
         width: 100%;
         background-color: #f8f9fa;
