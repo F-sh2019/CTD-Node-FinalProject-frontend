@@ -14,7 +14,7 @@ const Navbar = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("userRole");
-    navigate("/login"); // Redirect to login
+    navigate("/"); // Redirect to login
     window.location.reload(); // Refresh to update authentication state
   };
 
