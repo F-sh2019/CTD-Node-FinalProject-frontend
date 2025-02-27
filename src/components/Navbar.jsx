@@ -5,15 +5,16 @@ import Styled from 'styled-components';
 import Lms from "../assets/lms1.png"; 
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = (
+  { setIsAuthenticated }
+) => {
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("auth");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userRole");
+   
+    localStorage.clear();
+    setIsAuthenticated(false); 
     navigate("/"); // Redirect to login
     window.location.reload(); // Refresh to update authentication state
   };
