@@ -22,7 +22,7 @@ export default function registerUser(){
     };
     const handleRegister = ()=>{
    
-       fetch(`http://localhost:3200/api/v1/auth/register`, {
+       fetch(`https://ctd-node-final-farkhondehsh.onrender.com/api/v1/auth/register`, {
                    method: "POST",
                    headers: {
                        

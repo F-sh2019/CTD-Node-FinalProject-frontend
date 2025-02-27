@@ -13,7 +13,7 @@ export default function Courses() {
     
 
     useEffect(() => {
-        fetch("http://localhost:3200/api/v1/courses/", {
+        fetch("https://ctd-node-final-farkhondehsh.onrender.com/api/v1/courses/", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -45,7 +45,7 @@ export default function Courses() {
             return;
         }
 
-        fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
+        fetch(`https://ctd-node-final-farkhondehsh.onrender.com/api/v1/courses/${courseId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${token}`,

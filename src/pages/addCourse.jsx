@@ -46,7 +46,7 @@ export default function AddCourse(){
         if (courseId) {
             //console.log("courseId",courseId)
 
-            fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
+            fetch(`https://ctd-node-final-farkhondehsh.onrender.com/api/v1/courses/${courseId}`, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -146,7 +146,7 @@ export default function AddCourse(){
            
 
 
-    //     fetch(`http://localhost:3200/api/v1/courses`, {
+    //     fetch(`https://ctd-node-final-farkhondehsh.onrender.com/api/v1/courses`, {
     //         method: "POST",
     //         headers: {
     //             Authorization: `Bearer ${token}`,
@@ -191,7 +191,7 @@ export default function AddCourse(){
           formData.append("document", pdf);  // Append the document File object
         }
       
-        fetch(`http://localhost:3200/api/v1/courses`, {
+        fetch(`https://ctd-node-final-farkhondehsh.onrender.com/api/v1/courses`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -220,7 +220,7 @@ export default function AddCourse(){
       
 // const handleUpdateCourse=()=>{
    
-//     fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
+//     fetch(`https://ctd-node-final-farkhondehsh.onrender.com/api/v1/courses/${courseId}`, {
 //         method: 'PATCH',
 //         headers: {
 //             Authorization: `Bearer ${token}`,
@@ -265,7 +265,7 @@ const handleUpdateCourse = () => {
     }
     console.log(formData)
     // Send the PATCH request without manually setting the Content-Type header.
-    fetch(`http://localhost:3200/api/v1/courses/${courseId}`, {
+    fetch(`https://ctd-node-final-farkhondehsh.onrender.com/api/v1/courses/${courseId}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,

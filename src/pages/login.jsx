@@ -20,7 +20,7 @@ const Login = ({ setIsAuthenticated }) => {
     }
 
     try {
-        const response = await fetch("http://localhost:3200/api/v1/auth/login", {
+        const response = await fetch("https://ctd-node-final-farkhondehsh.onrender.com/api/v1/auth/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json', 

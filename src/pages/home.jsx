@@ -15,7 +15,7 @@ const Home = () => {
             return;
         }
 
-        fetch("http://localhost:3200/api/v1/auth/getallusers", {
+        fetch("https://ctd-node-final-farkhondehsh.onrender.com/api/v1/auth/getallusers", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
