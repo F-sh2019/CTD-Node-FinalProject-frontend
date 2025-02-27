@@ -39,8 +39,7 @@ export default function AddCourse(){
             teacher: userId
         }));
     }, [userId]);
-    
-    
+       
 
     useEffect(() => {
         if (courseId) {
