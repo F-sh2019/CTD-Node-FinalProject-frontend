@@ -6,7 +6,7 @@ import Lms from "../assets/lms1.png";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = (
-  { setIsAuthenticated }
+ 
 ) => {
 
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const Navbar = (
   const handleLogout = () => {
    
     localStorage.clear();
-    setIsAuthenticated(false); 
+   
     navigate("/"); // Redirect to login
     window.location.reload(); // Refresh to update authentication state
   };
