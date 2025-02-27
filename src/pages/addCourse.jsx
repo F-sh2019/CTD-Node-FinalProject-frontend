@@ -344,10 +344,27 @@ const handleCancelCourse=()=>{
 
             {/* PDF Upload */}
             <div className="img-container item">
-            <label className="label">Upload PDF/DOC Files:</label>
-            <input type="file" accept="application/pdf" onChange={handlePdfChange} name="document" />
-            {pdf && <p>Selected PDF: {pdf.name}</p>}
-            </div>
+  <label className="label">Upload PDF/DOC Files:</label>
+  <input type="file" accept="application/pdf" onChange={handlePdfChange} name="document" />
+  { pdf ? (
+      // If a new file is selected, show its name
+      <p>Selected PDF: {pdf.name}</p>
+    ) : courseData.document ? (
+      // If no new file is selected but there's an existing document, show a link
+      <a
+        href={`http://localhost:3200${courseData.document}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View Document
+      </a>
+    ) : (
+      // If nothing is available, show a placeholder message
+      <p>No document selected</p>
+    )
+  }
+</div>
+
             </div>
 
             <div><label  className="label">Schedule:</label>             
